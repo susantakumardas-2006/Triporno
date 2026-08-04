@@ -1,0 +1,29 @@
+[
+  {
+    "id": "hw-1",
+    "title": "Algebra revision set",
+    "topic": "Algebra",
+    "due": "tomorrow",
+    "status": "in progress",
+    "progress": 68,
+    "description": "Complete the mixed equation set and upload your working notes for faculty review."
+  },
+  {
+    "id": "hw-2",
+    "title": "Mechanics reflection",
+    "topic": "Mechanics",
+    "due": "Friday",
+    "status": "pending",
+    "progress": 41,
+    "description": "Summarize the forces in equilibrium problem and compare two solution strategies."
+  },
+  {
+    "id": "hw-3",
+    "title": "Biology concept map",
+    "topic": "Biology",
+    "due": "Monday",
+    "status": "planned",
+    "progress": 18,
+    "description": "Build a concept map linking mitosis, genetics, and ecology with personal examples."
+  }
+]

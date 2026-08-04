@@ -1,0 +1,23 @@
+[
+  {
+    "id": "thread-1",
+    "title": "How should we justify a proof step?",
+    "topic": "Geometry",
+    "replies": 6,
+    "preview": "A student asked about the best way to explain why the triangles are congruent."
+  },
+  {
+    "id": "thread-2",
+    "title": "Best practices for balancing multiple revisions",
+    "topic": "Study systems",
+    "replies": 4,
+    "preview": "Several learners shared routines that helped them stay calm before deadlines."
+  },
+  {
+    "id": "thread-3",
+    "title": "What makes a strong lab conclusion?",
+    "topic": "Physics",
+    "replies": 8,
+    "preview": "Faculty and students discussed how to connect results to the original hypothesis."
+  }
+]
