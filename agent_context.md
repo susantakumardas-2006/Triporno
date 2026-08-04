@@ -1,30 +1,84 @@
 # SmartEd agent context
 
-## Naming rules
-- Product name: SmartEd
-- Roles: Student, Faculty, Institute
-- Route prefixes: /app/student/, /app/faculty/, /app/institute/
+## Current product context
+SmartEd is a role-based learning platform implemented with React, TypeScript, Tailwind CSS, and mock JSON data. It supports three primary personas:
+- Student
+- Faculty
+- Institute Head
 
-## Scoring engines
+The application is a single-page app with UI routing and local demo authentication.
+
+## Routes and pages
+- `/` — public landing page with role-based login and demo credentials
+- `/auth/register` — registration placeholder
+- `/app/student/dashboard` — student dashboard
+- `/app/student/profile` — student profile and contribution graph
+- `/app/student/practice/arena/:problemId` — student practice arena
+- `/app/student/projects` — student project/peer review screen
+- `/app/student/homework` — student homework summary
+- `/app/student/discuss` — discussion feed
+- `/app/student/contest` — contest overview
+- `/app/faculty/dashboard` — faculty workspace and class oversight
+- `/app/institute/overview` — institute analytics and roster overview
+
+## Login flow
+- The landing page is intentionally login-first with a role toggle.
+- Demo credentials are displayed per role.
+- `src/lib/auth.ts` normalizes input for case- and whitespace-insensitive auth matching.
+- Student login routes to `/app/student/dashboard`; faculty login routes to `/app/faculty/dashboard`; institute login routes to `/app/institute/overview`.
+
+## Data sources
+The product uses local seeded JSON data files for demo content:
+- `database/students.json`
+- `database/faculty.json`
+- `database/institutes.json`
+- `database/problems.json`
+- `database/submissions.json`
+- `database/masteryRecords.json`
+- `database/homework.json`
+- `database/projects.json`
+- `database/discussions.json`
+- `database/contests.json`
+- `database/subscriptions.json`
+
+## Student experience
+- Practice queue with problem recommendations
+- Topic focus cards and mastery hints
+- Homework pulse and progress summaries
+- Rank, accuracy, and streak metrics
+- Profile contribution graph and mastery breakdown
+- Practice arena with premium/solution gating
+- Premium modal to unlock mentor and solution access
+
+## Faculty experience
+- Faculty dashboard with class metrics
+- Institute selection and student count insights
+- Average mastery and risk/advanced student lists
+- Class insight cards for student performance
+
+## Institute experience
+- Institute overview with adoption metrics
+- Faculty roster display
+- Student performance snapshot
+- Engagement and listing insights
+
+## Scoring logic
 ### Mastery engine
-- Update from Bayesian Knowledge Tracing with prior 0.3, transition 0.15, slip 0.1, and guess 0.2.
-- Every attempt updates the mastery score for each implicated concept.
+- Concept mastery values are stored in `database/masteryRecords.json`.
+- Views use these values to compute focus topics, progress, and performance metrics.
 
 ### Toughness engine
-- Institute-authored problems use an Elo-style calibration.
-- Seed rating is Easy 1000, Medium 1400, Hard 1800.
-- The displayed badge is derived from the live numeric rating and mapped to Easy/Medium/Hard.
+- Problems include `seedTier` and `liveToughnessRating` values.
+- Difficulty labels are derived from live toughness values (Easy / Medium / Hard).
 
-## Design system
-- Use a black base background and liquid-glass surface styling throughout.
-- Keep the monochrome palette with red only for errors and emerald only for the contribution graph.
+## Design principles
+- Black background palette with glassy UI panels
+- Monochrome styling with white primary actions
+- Red reserved for errors and emerald used for mastery/graph accents
+- Landing page uses a minimal hero with login focus and clear demo hints
 
-## Approval model
-- Student requests are approved by faculty.
-- Faculty requests are approved by institute heads.
-- Institute listing is gated by subscription.
-
-## Directory boundaries
-- src/: UI, pages, routing, and application shell
-- database/: mock data files
-- ml-engine/: pure scoring logic
+## Current implementation status
+- The login page and role-based auth flow are implemented.
+- The student portal is data-driven and contains dashboard, profile, and practice pages.
+- Faculty and institute dashboards are implemented with overview metrics.
+- Production build passes successfully with `npm run build`.
