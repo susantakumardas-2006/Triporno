@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Bell, BookOpen, Flame, Globe, Lock, Search, Sparkles, Crown, CheckCircle2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowRight, Bell, BookOpen, Flame, Globe, Lock, Search, Sparkles, Crown, CheckCircle2, LayoutGrid, MessageCircle, Trophy, ClipboardList, Building2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import AppShell from '../../components/AppShell';
 import problems from '../../../database/problems.json';
 import concepts from '../../../database/concepts.json';
 import mastery from '../../../database/masteryRecords.json';
@@ -12,10 +13,46 @@ import institutes from '../../../database/institutes.json';
 const boards = ['CBSE', 'ICSE/ISC', 'IB', 'IGCSE', 'WBCHSE', 'Other State Board'];
 
 function StudentDashboard() {
+  const navigate = useNavigate();
   const [showPremium, setShowPremium] = useState(false);
+  const [showInstitutePicker, setShowInstitutePicker] = useState(false);
+  const [selectedInstituteId, setSelectedInstituteId] = useState(() => {
+    if (typeof window === 'undefined') return institutes[0]?.id ?? '';
+    return window.localStorage.getItem('smarted-selected-institute-id') ?? institutes[0]?.id ?? '';
+  });
+  const [instituteClass, setInstituteClass] = useState(() => {
+    if (typeof window === 'undefined') return 'Grade 10';
+    return window.localStorage.getItem('smarted-selected-institute-class') ?? 'Grade 10';
+  });
+  const [instituteSection, setInstituteSection] = useState(() => {
+    if (typeof window === 'undefined') return 'A';
+    return window.localStorage.getItem('smarted-selected-institute-section') ?? 'A';
+  });
+  const [instituteQuery, setInstituteQuery] = useState('');
   const [scope, setScope] = useState('Global');
   const [board, setBoard] = useState('CBSE');
   const [topicFilter, setTopicFilter] = useState('All Topics');
+
+  const updateSelectedInstituteId = (id: string) => {
+    setSelectedInstituteId(id);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('smarted-selected-institute-id', id);
+    }
+  };
+
+  const updateInstituteClass = (value: string) => {
+    setInstituteClass(value);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('smarted-selected-institute-class', value);
+    }
+  };
+
+  const updateInstituteSection = (value: string) => {
+    setInstituteSection(value);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('smarted-selected-institute-section', value);
+    }
+  };
   const [premium, setPremium] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.localStorage.getItem('smarted-premium') === 'true';
@@ -58,44 +95,106 @@ function StudentDashboard() {
   };
 
   const rankingScope = scope === 'Board' ? board : scope;
+  const filteredInstitutes = institutes.filter((institute) => institute.name.toLowerCase().includes(instituteQuery.toLowerCase()) || institute.city.toLowerCase().includes(instituteQuery.toLowerCase()));
+  const selectedInstitute = institutes.find((institute) => institute.id === selectedInstituteId) ?? institutes[0];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <header className="px-6 py-3 border-b border-white/[0.05] sticky top-0 bg-black/80 backdrop-blur z-20">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-base font-semibold">
-            <Globe size={18} /> SmartEd
-          </div>
-          <div className="flex flex-wrap items-center gap-2 text-sm text-white/70">
-            <select value={scope} onChange={(event) => setScope(event.target.value)} className="rounded-full bg-white/10 px-3 py-2 text-white outline-none">
-              <option>Global</option>
-              <option>National</option>
-              <option>Institute</option>
-              <option>Board</option>
-            </select>
-            {scope === 'Board' ? (
-              <select value={board} onChange={(event) => setBoard(event.target.value)} className="rounded-full bg-white/10 px-3 py-2 text-white outline-none">
-                {boards.map((choice) => <option key={choice}>{choice}</option>)}
-              </select>
-            ) : null}
-            <Link to="/app/student/contest" className="rounded-full px-3 py-2 hover:bg-white/10">Contest</Link>
-            <Link to="/app/student/discuss" className="rounded-full px-3 py-2 hover:bg-white/10">Discuss</Link>
-            <Link to="/app/student/projects" className="rounded-full px-3 py-2 hover:bg-white/10">Peer Review</Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="liquid-glass rounded-full p-2"><Search size={16} /></button>
-            <button className="liquid-glass rounded-full p-2 relative"><Bell size={16} /><span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-white" /></button>
-            <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2"><Flame size={16} /> <span>7</span></div>
-            <button onClick={() => setShowPremium(true)} className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black">Premium</button>
-            <Link to="/app/student/profile" className="rounded-full border border-white/20 px-4 py-2 text-sm">Profile</Link>
+    <AppShell
+      title="Student workspace"
+      subtitle="Your learning pulse, sharpened."
+      sidebarHeaderBadge={
+        <Link to="/app/student/institute" className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-white/20 hover:bg-white/10">
+          <p className="text-white/60 text-xs uppercase tracking-[0.22em] mb-2">Selected institute</p>
+          <p className="font-semibold text-white">{selectedInstitute.name}</p>
+          <p className="text-white/60 text-sm">Class {instituteClass} • Section {instituteSection}</p>
+        </Link>
+      }
+      actions={
+        <>
+          <button type="button" onClick={() => setShowPremium(true)} className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black">
+            Premium
+          </button>
+          <Link to="/app/student/profile" className="rounded-full border border-white/20 px-4 py-2 text-sm">
+            Profile
+          </Link>
+        </>
+      }
+      navItems={[
+        { to: '/app/student/dashboard', label: 'Dashboard', icon: LayoutGrid },
+        { label: 'Institute', icon: Building2, isBold: true, onClick: () => setShowInstitutePicker(true) },
+        { to: '/app/student/practice', label: 'Practice', icon: Flame },
+        { to: '/app/student/homework', label: 'Homework', icon: BookOpen },
+        { to: '/app/student/projects', label: 'Projects', icon: ClipboardList },
+        { to: '/app/student/discuss', label: 'Discuss', icon: MessageCircle },
+        { to: '/app/student/contest', label: 'Contest', icon: Trophy },
+      ]}
+    >
+      <div className="space-y-8">
+        <div className="liquid-glass rounded-[32px] border border-white/10 p-8">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="uppercase tracking-[0.32em] text-white/50 text-xs mb-4">Student workspace</p>
+              <h1 className="text-4xl md:text-5xl font-semibold section-heading">Your learning pulse, sharpened.</h1>
+              <p className="mt-4 text-white/70 leading-8 section-subtitle">Live mastery insights, focused practice, and peer collaboration all within a glass-backed app experience.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto">
+              <div className="feature-pill">
+                <p className="text-white/60 text-xs uppercase tracking-[0.22em]">Rank</p>
+                <p className="mt-3 text-2xl font-semibold">#{scope === 'Board' ? 18 : 12}</p>
+              </div>
+              <div className="feature-pill">
+                <p className="text-white/60 text-xs uppercase tracking-[0.22em]">Accuracy</p>
+                <p className="mt-3 text-2xl font-semibold">{accuracy}%</p>
+              </div>
+              <div className="feature-pill">
+                <p className="text-white/60 text-xs uppercase tracking-[0.22em]">Streak</p>
+                <p className="mt-3 text-2xl font-semibold">{studentSubmissions.filter((entry: { correct: boolean }) => entry.correct).length > 0 ? '7d' : '0d'}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
+        <div className="liquid-glass rounded-[28px] p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div>
+              <p className="text-white/60 text-sm">Scope</p>
+              <h2 className="text-xl font-semibold">{rankingScope} view</h2>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <select value={scope} onChange={(event) => setScope(event.target.value)} className="rounded-full bg-white/10 px-3 py-2 text-white outline-none">
+                <option>Global</option>
+                <option>National</option>
+                <option>Institute</option>
+                <option>Board</option>
+              </select>
+              {scope === 'Board' ? (
+                <select value={board} onChange={(event) => setBoard(event.target.value)} className="rounded-full bg-white/10 px-3 py-2 text-white outline-none">
+                  {boards.map((choice) => <option key={choice}>{choice}</option>)}
+                </select>
+              ) : null}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="rounded-[24px] bg-white/[0.03] p-5">
+              <p className="text-white/60 text-sm">Practice queue</p>
+              <p className="mt-3 text-2xl font-semibold">{filteredProblems.length} problems</p>
+            </div>
+            <div className="rounded-[24px] bg-white/[0.03] p-5">
+              <p className="text-white/60 text-sm">Focus topics</p>
+              <p className="mt-3 text-2xl font-semibold">{focusTopics.length} areas</p>
+            </div>
+            <div className="rounded-[24px] bg-white/[0.03] p-5">
+              <p className="text-white/60 text-sm">Live rank</p>
+              <p className="mt-3 text-2xl font-semibold">#{rankingScope === 'Board' ? 18 : 12}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-0 py-0 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
         <section className="space-y-6">
           <div className="liquid-glass rounded-3xl p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div>
                 <p className="text-white/60 text-sm">Practice queue</p>
                 <h2 className="text-2xl font-semibold">Problem set</h2>
@@ -120,7 +219,7 @@ function StudentDashboard() {
                   <div className="flex items-center gap-4 text-sm text-white/60">
                     <span>{problem.ratio}% solved</span>
                     <Link to={`/app/student/practice/arena/${problem.id}`} className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-white">
-                      {premium ? 'View answer' : 'Open'} <ArrowRight size={15} />
+                      Open <ArrowRight size={15} />
                     </Link>
                   </div>
                 </div>
@@ -181,6 +280,15 @@ function StudentDashboard() {
             <div className="mt-3 rounded-2xl bg-white/[0.03] p-3 text-sm text-white/70">Solved {solvedCount} problems • {accuracy}% accuracy • 7 day streak</div>
           </div>
           <div className="liquid-glass rounded-3xl p-6">
+            <p className="text-white/60 text-sm">Selected institute</p>
+            <h3 className="text-xl font-semibold mt-3">{selectedInstitute.name}</h3>
+            <p className="mt-2 text-white/60">{selectedInstitute.city} • {selectedInstitute.board}</p>
+            <p className="mt-3 text-white/60">Class {instituteClass} • Section {instituteSection}</p>
+            <Link to="/app/student/institute" className="mt-4 inline-flex rounded-full border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/5">
+              Open institute hub
+            </Link>
+          </div>
+          <div className="liquid-glass rounded-3xl p-6">
             <p className="text-white/60 text-sm">Trending institutes</p>
             <div className="space-y-3 mt-3">
               {institutes.slice(0, 3).map((institute: { id: string; name: string; city: string }) => (
@@ -189,7 +297,7 @@ function StudentDashboard() {
             </div>
           </div>
         </aside>
-      </main>
+      </div>
 
       {showPremium ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
@@ -209,7 +317,83 @@ function StudentDashboard() {
           </div>
         </div>
       ) : null}
-    </div>
+      {showInstitutePicker ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="liquid-glass rounded-3xl p-6 max-w-2xl w-full">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
+              <div>
+                <p className="uppercase tracking-[0.32em] text-white/50 text-xs mb-2">Choose your institute</p>
+                <h3 className="text-2xl font-semibold">Institute selection</h3>
+              </div>
+              <button onClick={() => setShowInstitutePicker(false)} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm">Close</button>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-[0.85fr_0.45fr]">
+              <div className="space-y-4">
+                <div className="rounded-3xl bg-white/[0.03] p-4">
+                  <label className="text-sm text-white/60">Search institutes</label>
+                  <input
+                    type="text"
+                    value={instituteQuery}
+                    onChange={(event) => setInstituteQuery(event.target.value)}
+                    placeholder="Search by institute name or city"
+                    className="mt-3 w-full rounded-full bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/40"
+                  />
+                </div>
+                <div className="rounded-3xl bg-white/[0.03] p-4">
+                  <label className="text-sm text-white/60">Class</label>
+                  <select
+                    value={instituteClass}
+                    onChange={(event) => updateInstituteClass(event.target.value)}
+                    className="mt-3 w-full rounded-full bg-white/10 px-4 py-3 text-white outline-none"
+                  >
+                    <option>Grade 9</option>
+                    <option>Grade 10</option>
+                    <option>Grade 11</option>
+                    <option>Grade 12</option>
+                  </select>
+                </div>
+                <div className="rounded-3xl bg-white/[0.03] p-4">
+                  <label className="text-sm text-white/60">Section</label>
+                  <select
+                    value={instituteSection}
+                    onChange={(event) => updateInstituteSection(event.target.value)}
+                    className="mt-3 w-full rounded-full bg-white/10 px-4 py-3 text-white outline-none"
+                  >
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                  </select>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {filteredInstitutes.slice(0, 6).map((institute) => (
+                  <button
+                    key={institute.id}
+                    onClick={() => {
+                      updateSelectedInstituteId(institute.id);
+                      setShowInstitutePicker(false);
+                      navigate('/app/student/institute');
+                    }}
+                    className="w-full rounded-3xl border border-white/10 bg-white/5 p-4 text-left transition hover:border-white/20"
+                  >
+                    <p className="font-semibold">{institute.name}</p>
+                    <p className="text-sm text-white/60">{institute.city} • {institute.board}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-3xl bg-white/[0.03] p-6">
+              <h4 className="text-lg font-semibold">Selected</h4>
+              <p className="mt-3 text-white/70">{selectedInstitute?.name}</p>
+              <p className="text-white/60">{selectedInstitute?.city} • {selectedInstitute?.board}</p>
+              <p className="text-white/60 mt-3">Class {instituteClass}, Section {instituteSection}</p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </AppShell>
   );
 }
 
