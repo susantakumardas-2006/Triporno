@@ -1,34 +1,23 @@
 # SmartEd agent context
 
 ## Current product context
-SmartEd is a role-based learning platform implemented with React, TypeScript, Tailwind CSS, and mock JSON data. It supports three primary personas:
-- Student
-- Faculty
-- Institute Head
+SmartEd is a role-based learning platform built as a demo app for Students, Faculty, and Institute Heads. It is implemented as a React + TypeScript SPA with Tailwind CSS, using mock JSON data in a local `database/` folder and a small scoring engine in `ml-engine/`.
 
-The application is a single-page app with UI routing and local demo authentication.
-
-## Routes and pages
-- `/` — public landing page with role-based login and demo credentials
-- `/auth/register` — registration placeholder
-- `/app/student/dashboard` — student dashboard
-- `/app/student/profile` — student profile and contribution graph
-- `/app/student/practice/arena/:problemId` — student practice arena
-- `/app/student/projects` — student project/peer review screen
-- `/app/student/homework` — student homework summary
-- `/app/student/discuss` — discussion feed
-- `/app/student/contest` — contest overview
-- `/app/faculty/dashboard` — faculty workspace and class oversight
-- `/app/institute/overview` — institute analytics and roster overview
+## Roles and routes
+- Public auth landing page: `/`
+- Registration placeholder: `/auth/register`
+- Student portal: `/app/student/dashboard`, `/app/student/profile`, `/app/student/practice/arena/:problemId`, `/app/student/projects`, `/app/student/homework`, `/app/student/discuss`, `/app/student/contest`
+- Faculty portal: `/app/faculty/dashboard`
+- Institute portal: `/app/institute/overview`
 
 ## Login flow
-- The landing page is intentionally login-first with a role toggle.
-- Demo credentials are displayed per role.
-- `src/lib/auth.ts` normalizes input for case- and whitespace-insensitive auth matching.
-- Student login routes to `/app/student/dashboard`; faculty login routes to `/app/faculty/dashboard`; institute login routes to `/app/institute/overview`.
+- The landing page is a login hero with a role toggle for Student, Faculty, and Institute.
+- Demo credentials are shown per role and used by `authenticateUser` in `src/lib/auth.ts`.
+- Student login navigates to the student dashboard, faculty login to faculty dashboard, and institute login to institute overview.
+- Password visibility toggle and inline error messaging are supported.
 
 ## Data sources
-The product uses local seeded JSON data files for demo content:
+The project uses local seeded JSON datasets to drive UI content and demo state:
 - `database/students.json`
 - `database/faculty.json`
 - `database/institutes.json`
@@ -41,44 +30,43 @@ The product uses local seeded JSON data files for demo content:
 - `database/contests.json`
 - `database/subscriptions.json`
 
-## Student experience
-- Practice queue with problem recommendations
-- Topic focus cards and mastery hints
-- Homework pulse and progress summaries
-- Rank, accuracy, and streak metrics
-- Profile contribution graph and mastery breakdown
-- Practice arena with premium/solution gating
-- Premium modal to unlock mentor and solution access
+## Key UI and feature coverage
+### Landing page
+- Pure login-first hero experience
+- Role-based demo auth hints
+- Register CTA top-right
+- Newsletter / subscription prompt and social buttons
+- Black, liquid-glass, monochrome styling with white primary CTA and red errors
 
-## Faculty experience
-- Faculty dashboard with class metrics
-- Institute selection and student count insights
-- Average mastery and risk/advanced student lists
-- Class insight cards for student performance
+### Student portal
+- Student dashboard with practice queue, mastery focus, homework pulse, rank, streaks, and trending institutes
+- Student profile with contribution graph, mastery breakdown, difficulty stats, streak and accuracy metrics
+- Practice arena page showing problem details and premium/solution access gating
+- Premium upgrade modal for additional functionality
 
-## Institute experience
-- Institute overview with adoption metrics
-- Faculty roster display
-- Student performance snapshot
-- Engagement and listing insights
+### Faculty portal
+- Faculty dashboard showing faculty workspace, institute selection, student counts, problem metrics, and average mastery
+- Class insights, advanced student list, and at-risk student list
+
+### Institute portal
+- Institute overview page showing institute adoption, engagement, student performance snapshot, and faculty roster
 
 ## Scoring logic
 ### Mastery engine
-- Concept mastery values are stored in `database/masteryRecords.json`.
-- Views use these values to compute focus topics, progress, and performance metrics.
+- Runtime scoring is modeled after a Bayesian Knowledge Tracing-style mastery update.
+- Concept mastery values are stored in `database/masteryRecords.json` and used throughout student and faculty views.
 
 ### Toughness engine
-- Problems include `seedTier` and `liveToughnessRating` values.
-- Difficulty labels are derived from live toughness values (Easy / Medium / Hard).
+- Problems carry `liveToughnessRating` and `seedTier` values.
+- Problem difficulty labels are derived from live rating ranges (Easy / Medium / Hard).
 
 ## Design principles
-- Black background palette with glassy UI panels
-- Monochrome styling with white primary actions
-- Red reserved for errors and emerald used for mastery/graph accents
-- Landing page uses a minimal hero with login focus and clear demo hints
+- Black background with glassy surface cards and translucent panels
+- Monochrome palette, white UI accents, emerald for mastery/graph highlights, red for errors
+- Minimal text-heavy hero layout for the landing page
 
 ## Current implementation status
-- The login page and role-based auth flow are implemented.
-- The student portal is data-driven and contains dashboard, profile, and practice pages.
-- Faculty and institute dashboards are implemented with overview metrics.
-- Production build passes successfully with `npm run build`.
+- Core landing page and login flow are implemented and verified by production build.
+- Student portal is wired to seeded data and contains a functioning dashboard, profile, and practice experience.
+- Faculty and institute portals are present with rich overview dashboards, but can be expanded further with request workflows and approval detail screens.
+- Build status: `npm run build` completes successfully.

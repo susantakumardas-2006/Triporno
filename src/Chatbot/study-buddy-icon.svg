@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Badge background: deep teal squircle -->
+  <rect x="0" y="0" width="200" height="200" rx="46" fill="#123A3A"/>
+
+  <!-- Chat bubble -->
+  <rect x="34" y="38" width="132" height="94" rx="28" fill="#FDFBF6"/>
+  <path d="M66,132 L100,132 L54,160 Z" fill="#FDFBF6"/>
+
+  <!-- Open book, drawn inside the bubble -->
+  <line x1="100" y1="58" x2="100" y2="96" stroke="#123A3A" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="100,58 62,66 62,100 100,92" fill="#123A3A"/>
+  <polygon points="100,58 138,66 138,100 100,92" fill="#123A3A"/>
+
+  <!-- Spark accent, sitting on the badge edge -->
+  <path d="M162,26 L167,37 L178,42 L167,47 L162,58 L157,47 L146,42 L157,37 Z" fill="#F2A93B"/>
+</svg>

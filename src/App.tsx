@@ -1,8 +1,15 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import StudentDashboard from './pages/student/StudentDashboard';
+import StudentInstituteDashboard from './pages/student/StudentInstituteDashboard';
+import StudentInstituteHomework from './pages/student/StudentInstituteHomework';
+import StudentInstituteProjects from './pages/student/StudentInstituteProjects';
 import FacultyDashboard from './pages/faculty/FacultyDashboard';
+import FacultyInstitutes from './pages/faculty/FacultyInstitutes';
+import FacultyStudents from './pages/faculty/FacultyStudents';
 import InstituteOverview from './pages/institute/InstituteOverview';
+import InstituteFaculty from './pages/institute/InstituteFaculty';
+import InstituteStudents from './pages/institute/InstituteStudents';
 import RegisterPage from './pages/RegisterPage';
 import StudentProfile from './pages/student/StudentProfile';
 import StudentPractice from './pages/student/StudentPractice';
@@ -18,13 +25,21 @@ function App() {
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/app/student/dashboard" element={<StudentDashboard />} />
       <Route path="/app/student/profile" element={<StudentProfile />} />
+      <Route path="/app/student/practice" element={<StudentPractice />} />
       <Route path="/app/student/practice/arena/:problemId" element={<StudentPractice />} />
       <Route path="/app/student/discuss" element={<StudentDiscuss />} />
       <Route path="/app/student/contest" element={<StudentContest />} />
       <Route path="/app/student/projects" element={<StudentProjects />} />
       <Route path="/app/student/homework" element={<StudentHomework />} />
+      <Route path="/app/student/institute" element={<StudentInstituteDashboard />} />
+      <Route path="/app/student/institute/homework" element={<StudentInstituteHomework />} />
+      <Route path="/app/student/institute/projects" element={<StudentInstituteProjects />} />
       <Route path="/app/faculty/dashboard" element={<FacultyDashboard />} />
+      <Route path="/app/faculty/institutes" element={<FacultyInstitutes />} />
+      <Route path="/app/faculty/students" element={<FacultyStudents />} />
       <Route path="/app/institute/overview" element={<InstituteOverview />} />
+      <Route path="/app/institute/faculty" element={<InstituteFaculty />} />
+      <Route path="/app/institute/students" element={<InstituteStudents />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

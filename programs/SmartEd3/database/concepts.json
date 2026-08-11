@@ -1,8 +1,0 @@
-{
-  "subjects": [
-    { "name": "Math", "topics": ["Algebra", "Geometry", "Calculus"] },
-    { "name": "Physics", "topics": ["Mechanics", "Electricity", "Optics"] },
-    { "name": "Chemistry", "topics": ["Organic", "Inorganic", "Physical"] },
-    { "name": "Biology", "topics": ["Cell", "Genetics", "Ecology"] }
-  ]
-}
