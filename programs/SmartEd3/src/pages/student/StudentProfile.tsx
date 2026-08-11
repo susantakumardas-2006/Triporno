@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppShell from '../../components/AppShell';
 import { LayoutGrid, Flame, BookOpen, ClipboardList, MessageCircle, Trophy } from 'lucide-react';
@@ -12,7 +12,13 @@ type ContributionCell = {
   count: number;
 };
 
-const emerald = ['rgba(255,255,255,0.04)', '#0d3b2e', '#146b4f', '#1fa374', '#34e0a1'];
+const emerald = ['#111517', '#0f4a31', '#0f8a50', '#20b57e', '#51e5a3'];
+
+const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+};
 
 function StudentProfile() {
   const studentId = 'student-1';
@@ -38,6 +44,35 @@ function StudentProfile() {
 
     return cells;
   }, [studentSubmissions]);
+
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [openTooltips, setOpenTooltips] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    try {
+      setIsTouchDevice(('ontouchstart' in window) || (navigator.maxTouchPoints ?? 0) > 0);
+    } catch (e) {
+      setIsTouchDevice(false);
+    }
+  }, []);
+
+  // close open tooltips when tapping outside the heatmap on touch devices
+  useEffect(() => {
+    if (!isTouchDevice) return;
+    const handler = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (!target.closest('.contrib-heatmap')) {
+        setOpenTooltips({});
+      }
+    };
+    document.addEventListener('touchstart', handler);
+    return () => document.removeEventListener('touchstart', handler);
+  }, [isTouchDevice]);
+
+  const toggleTooltip = (date: string) => {
+    setOpenTooltips(prev => ({ ...prev, [date]: !prev[date] }));
+  };
 
   const weeks = useMemo(() => {
     return Array.from({ length: Math.ceil(contributionCells.length / 7) }, (_, weekIndex) => contributionCells.slice(weekIndex * 7, weekIndex * 7 + 7));
@@ -118,27 +153,41 @@ function StudentProfile() {
                 <div className="text-white/60 text-sm">Last 12 months</div>
               </div>
               <div className="overflow-x-auto">
-                <div className="inline-block min-w-[920px]">
+                <div className="contrib-heatmap inline-block min-w-[940px]">
                   <div className="grid grid-cols-[auto_1fr] gap-3">
                     <div className="flex flex-col justify-between text-[10px] text-white/40 pr-2">
-                      <span>Mon</span><span>Wed</span><span>Fri</span>
+                      <span>Mon</span>
+                      <span>Wed</span>
+                      <span>Fri</span>
                     </div>
                     <div>
-                      <div className="grid grid-cols-[repeat(53,minmax(10px,10px))] gap-[3px] mb-2 text-[10px] text-white/40">
-                        {weeks[0]?.map((_, index) => (
+                      <div className="grid grid-cols-[repeat(53,minmax(12px,12px))] gap-[4px] mb-2 text-[10px] text-white/40">
+                        {Array.from({ length: 53 }).map((_, index) => (
                           <div key={index} className="text-center">{index % 4 === 0 ? 'M' : ''}</div>
                         ))}
                       </div>
-                      <div className="grid grid-cols-[repeat(53,minmax(10px,10px))] gap-[3px]">
+                      <div className="grid grid-cols-[repeat(53,minmax(12px,12px))] gap-[4px]">
                         {contributionCells.map((cell, index) => {
                           const level = Math.min(4, cell.count);
+                          const formattedDate = formatDate(cell.date);
+                          const tooltip = cell.count > 0 ? `${cell.count} activit${cell.count === 1 ? 'y' : 'ies'} on ${formattedDate}` : `No activity on ${formattedDate}`;
+                          const isOpen = !!openTooltips[cell.date];
                           return (
                             <div
                               key={`${cell.date}-${index}`}
-                              className="w-[10px] h-[10px] rounded-sm"
-                              style={{ backgroundColor: emerald[level] }}
-                              title={`${cell.count} activities on ${cell.date}`}
-                            />
+                              className={`relative group ${isTouchDevice && isOpen ? 'tooltip-open' : ''}`}
+                              onClick={isTouchDevice ? () => toggleTooltip(cell.date) : undefined}
+                            >
+                              <div
+                                className="w-[12px] h-[12px] rounded-sm border border-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.04)]"
+                                style={{ backgroundColor: emerald[level] }}
+                                aria-label={tooltip}
+                                role="img"
+                              />
+                              <div className="pointer-events-none absolute -top-10 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs bg-black/80 rounded-md text-white opacity-0 group-hover:opacity-100 tooltip-animate whitespace-nowrap shadow-lg">
+                                {tooltip}
+                              </div>
+                            </div>
                           );
                         })}
                       </div>
@@ -146,18 +195,20 @@ function StudentProfile() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-4 mt-4 text-sm text-white/70 flex-wrap">
-                <span>{studentSubmissions.length} activities in the period</span>
-                <span>•</span>
-                <span>Accuracy: {accuracy}%</span>
-                <span>•</span>
-                <span>Current streak: {streaks.current}</span>
-                <span>•</span>
-                <span>Longest streak: {streaks.longest}</span>
-                <div className="ml-auto flex items-center gap-2">
+              <div className="mt-6 text-sm text-white/60">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span>{studentSubmissions.length} activities</span>
+                  <span>•</span>
+                  <span>Accuracy {accuracy}%</span>
+                  <span>•</span>
+                  <span>Current streak {streaks.current}d</span>
+                  <span>•</span>
+                  <span>Longest streak {streaks.longest}d</span>
+                </div>
+                <div className="mt-4 flex items-center gap-2 text-xs">
                   <span>Less</span>
                   {emerald.map((color) => (
-                    <div key={color} className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
+                    <div key={color} className="h-3 w-3 rounded-sm border border-white/10" style={{ backgroundColor: color }} />
                   ))}
                   <span>More</span>
                 </div>
