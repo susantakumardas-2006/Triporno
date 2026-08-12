@@ -46,16 +46,17 @@ export async function sendMessage(userMessage: string, history: ChatMessage[] = 
     }
   }
 
-  // Try server proxy first
+  // Try server proxy or local backend first
   try {
-    // Allow a configured proxy URL in dev: VITE_STUDY_BUDDY_URL
     const configured = (import.meta as any).env?.VITE_STUDY_BUDDY_URL;
     const tryUrls = [];
     if (configured) tryUrls.push(configured.replace(/\/$/, '') + '/api/studybuddy');
     // First try same-origin path (works if proxy is mounted behind the frontend server)
     tryUrls.push('/api/studybuddy');
-    // Finally try localhost with default port where the standalone proxy runs
-    tryUrls.push('http://localhost:5174/api/studybuddy');
+    // In dev, also try the backend directly in case proxy is not active
+    if ((import.meta as any).env?.DEV) {
+      tryUrls.push('http://localhost:5174/api/studybuddy');
+    }
 
     for (const url of tryUrls) {
       try {
