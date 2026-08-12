@@ -32,10 +32,24 @@ function LandingPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [opacity, setOpacity] = useState(1);
+  const [shouldAutoPlay, setShouldAutoPlay] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setShouldAutoPlay(!mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener('change', update);
+    return () => mediaQuery.removeEventListener('change', update);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    if (!shouldAutoPlay) {
+      video.pause();
+      return;
+    }
 
     const fadeTo = (target: number, duration: number) => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -60,33 +74,24 @@ function LandingPage() {
     };
 
     const handleTimeUpdate = () => {
+      if (!video.duration) return;
       if (video.duration - video.currentTime <= 0.55 && !fadingOutRef.current) {
         fadingOutRef.current = true;
         fadeTo(0, 500);
+      } else if (video.currentTime <= 0.1 && fadingOutRef.current) {
+        fadingOutRef.current = false;
+        fadeTo(1, 500);
       }
     };
 
-    const handleEnded = () => {
-      setOpacity(0);
-      opacityRef.current = 0;
-      setTimeout(() => {
-        video.currentTime = 0;
-        video.play().catch(() => undefined);
-        fadingOutRef.current = false;
-        fadeTo(1, 500);
-      }, 100);
-    };
-
     video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('ended', handleEnded);
     playLoop();
 
     return () => {
       video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('ended', handleEnded);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [shouldAutoPlay]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,15 +134,19 @@ function LandingPage() {
   const navLinks = useMemo(() => ['student', 'faculty', 'institute'] as Role[], []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black flex flex-col">
+    <div className="relative h-[100svh] min-h-[100vh] w-full overflow-hidden bg-black flex flex-col">
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover translate-y-[17%]"
+        className="absolute inset-0 w-full h-full object-cover object-[center_20%] md:object-center"
         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4"
+        poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23000000'/%3E%3Cstop offset='100%25' stop-color='%23111111'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3C/svg%3E"
         muted
         playsInline
-        autoPlay
-        loop={false}
+        autoPlay={shouldAutoPlay}
+        loop
+        disablePictureInPicture
+        disableRemotePlayback
+        preload={shouldAutoPlay ? 'auto' : 'metadata'}
         style={{ opacity }}
       />
       <div className="absolute inset-0 bg-black/50" />
