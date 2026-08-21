@@ -2,29 +2,49 @@ import systemPrompt from './systemprompt.txt?raw';
 
 type ChatMessage = { role: 'user' | 'assistant' | 'system'; content: string; structured?: any };
 
-async function callOpenAI(messages: ChatMessage[], apiKey: string) {
+async function callGemini(messages: ChatMessage[], apiKey: string) {
+  const contents = messages
+    .filter((m) => m.role !== 'system')
+    .map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+  const systemInstruction = messages.find((m) => m.role === 'system')?.content;
+
   const body = {
-    model: 'gpt-4o-mini',
-    messages,
-    temperature: 0.6,
+    contents,
+    systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined,
+    generationConfig: {
+      temperature: 0.6,
+      maxOutputTokens: 2048,
+    },
   };
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
-  });
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/interactions?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+        'Api-Revision': '2026-05-20'
+      },
+      body: JSON.stringify({
+        model: 'gemini-3.7-flash',
+        input: messages.filter(m => m.role !== 'system').map(m => m.content).join('\n'),
+        systemInstruction: messages.find(m => m.role === 'system')?.content
+      }),
+    }
+  );
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`OpenAI error: ${res.status} ${text}`);
+    throw new Error(`Gemini error: ${res.status} ${text}`);
   }
 
   const data = await res.json();
-  const content = data.choices?.[0]?.message?.content ?? '';
+  const content = data.steps?.[0]?.modelOutput?.content?.[0]?.text?.text ?? '';
   return content;
 }
 
@@ -37,16 +57,18 @@ export async function sendMessage(userMessage: string, history: ChatMessage[] = 
     { role: 'user', content: userMessage },
   ];
 
+  // Try direct API call first (if key exists)
   if (envKey) {
     try {
-      const reply = await callOpenAI(messages, envKey);
+      const reply = await callGemini(messages, envKey);
       return { text: reply };
     } catch (e) {
-      return { text: `Sorry, I couldn't reach the assistant: ${String(e)}` };
+      console.warn('Direct Gemini API failed, falling back to proxy:', String(e));
+      // Fall through to proxy
     }
   }
 
-  // Try server proxy or local backend first
+  // Try server proxy or local backend
   try {
     const configured = (import.meta as any).env?.VITE_STUDY_BUDDY_URL;
     const tryUrls = [];

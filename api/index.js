@@ -9,29 +9,24 @@ app.use(express.json());
 
 async function callGemini(messages, apiKey) {
   const inputText = messages.map((m) => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n');
+  const systemInstruction = messages.find(m => m.role === 'system')?.content;
 
-  const headers = { 'Content-Type': 'application/json' };
-  if (apiKey) headers['x-goog-api-key'] = apiKey;
-  if (apiKey && apiKey.startsWith('ya29.')) {
-    headers['Authorization'] = `Bearer ${apiKey}`;
-  }
-
-  const generateBody = {
-    contents: [
-      {
-        parts: [
-          {
-            text: inputText,
-          },
-        ],
-      },
-    ],
+  const headers = { 
+    'Content-Type': 'application/json',
+    'x-goog-api-key': apiKey,
+    'Api-Revision': '2026-05-20'
   };
 
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent', {
+  const body = {
+    model: 'gemini-3.7-flash',
+    input: inputText,
+    systemInstruction: systemInstruction
+  };
+
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
     method: 'POST',
     headers,
-    body: JSON.stringify(generateBody),
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) {
@@ -42,8 +37,11 @@ async function callGemini(messages, apiKey) {
 
   const data = await res.json();
   let content = '';
-  if (data.output_text) content = data.output_text;
-  else if (data.candidates && data.candidates[0]) {
+  if (data.steps && data.steps[0] && data.steps[0].modelOutput && data.steps[0].modelOutput.content && data.steps[0].modelOutput.content[0] && data.steps[0].modelOutput.content[0].text && data.steps[0].modelOutput.content[0].text.text) {
+    content = data.steps[0].modelOutput.content[0].text.text;
+  } else if (data.output_text) {
+    content = data.output_text;
+  } else if (data.candidates && data.candidates[0]) {
     const cand = data.candidates[0];
     if (cand.output_text) content = cand.output_text;
     else if (typeof cand.content === 'string') content = cand.content;
