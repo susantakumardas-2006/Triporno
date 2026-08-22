@@ -2,10 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const socraticRouter = require('./socratic');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/socratic', socraticRouter);
 
 async function callGemini(messages, apiKey) {
   const systemInstruction = messages.find(m => m.role === 'system')?.content;
