@@ -1,0 +1,76 @@
+{
+  "student-1": {
+    "Algebra": {
+      "totalSolved": 12,
+      "masteryScore": 78,
+      "lastDefenderSession": "2026-08-20T14:30:00Z",
+      "defenderPassCount": 2,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Calculus": {
+      "totalSolved": 8,
+      "masteryScore": 65,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Mechanics": {
+      "totalSolved": 15,
+      "masteryScore": 82,
+      "lastDefenderSession": "2026-08-18T10:15:00Z",
+      "defenderPassCount": 3,
+      "defenderFailCount": 1,
+      "skipCount": 1,
+      "forceExitCount": 0
+    },
+    "Optics": {
+      "totalSolved": 5,
+      "masteryScore": 45,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Geometry": {
+      "totalSolved": 10,
+      "masteryScore": 72,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Quadratic Equations": {
+      "totalSolved": 7,
+      "masteryScore": 76,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Discriminant": {
+      "totalSolved": 3,
+      "masteryScore": 68,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    },
+    "Vertex Form": {
+      "totalSolved": 4,
+      "masteryScore": 55,
+      "lastDefenderSession": null,
+      "defenderPassCount": 0,
+      "defenderFailCount": 0,
+      "skipCount": 0,
+      "forceExitCount": 0
+    }
+  }
+}

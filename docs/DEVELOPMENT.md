@@ -44,6 +44,8 @@ npm run dev
 
 The frontend tries to call Gemini directly from the browser → **blocked by CORS**. It falls back to `/api/studybuddy` which requires a local server. In production, Vercel handles this automatically via serverless functions.
 
+The same proxy now serves both StudyBuddy (`/api/studybuddy`) and Socratic Engine (`/api/socratic/*`) endpoints.
+
 ### Single Terminal Alternative
 
 Use `concurrently` (install: `npm i -D concurrently`):
@@ -80,6 +82,45 @@ STUDY_BUDDY_KEY=your_gemini_key node start-api.cjs
    - `StudyBuddy proxy fetch failed for /api/studybuddy` (if proxy not running)
    - Response from proxy
 
+## Testing Socratic Engine
+
+### Defender Trigger (Auto)
+1. Login as student
+2. Go to Practice Arena
+3. Solve problems in a topic until mastery > 75 (check StudentDashboard)
+4. Submit an answer → Defender modal should appear
+6. Complete the challenge sequence
+7. Verify mastery updates in StudentDashboard
+
+### Test Yourself (Manual)
+1. Navigate to `/app/student/test-yourself`
+2. Select one or more topics
+3. Click "Start Assessment"
+4. Complete adaptive questions
+5. View report with gaps, videos, recommended problems
+
+### Session Resume
+1. Start a Defender session
+2. Refresh browser mid-session
+3. Should prompt "Resume previous session?"
+4. Continue from last question
+
+### API Testing
+```bash
+# Check trigger
+curl -X POST http://localhost:5174/api/socratic/check-trigger \
+  -H "Content-Type: application/json" \
+  -d '{"studentId":"student-1","topic":"Algebra"}'
+
+# Start session
+curl -X POST http://localhost:5174/api/socratic/start-session \
+  -H "Content-Type: application/json" \
+  -d '{"studentId":"student-1","topic":"Algebra","triggerType":"auto"}'
+
+# Health check
+curl http://localhost:5174/api/health
+```
+
 ## Common Issues
 
 | Issue | Fix |
@@ -89,6 +130,8 @@ STUDY_BUDDY_KEY=your_gemini_key node start-api.cjs
 | Port 5174 in use | Change port in `start-api.cjs` and `chatService.ts` |
 | TypeScript errors | Run `npm run build` to see full output |
 | Stale data | Restart both terminals after JSON changes |
+| Defender not triggering | Check `topicProgress.json` masteryScore > 75 |
+| Video lessons not loading | Verify `videoLessons.json` format; check `/api/video-lessons` |
 
 ## Project Commands
 
@@ -114,9 +157,25 @@ npm run typecheck
 3. Add nav item in the role's dashboard (uses `AppShell` + `navItems`)
 4. Import icons from `lucide-react`
 
+### New Socratic Pages
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/app/student/test-yourself` | `TestYourself.tsx` | Voluntary self-assessment |
+| `/app/faculty/socratic-insights` | `FacultySocraticInsights.tsx` | Class misconceptions dashboard |
+
 ## Modifying Data
 
-Edit JSON files in `src/database/` - changes reflect on next build/dev restart.
+Edit JSON files in `database/` (root level) - changes reflect on next build/dev restart.
+
+### Key Files for Socratic Engine
+| File | Purpose |
+|------|---------|
+| `database/problems.json` | Add `remediationPool`, `enrichmentPool`, `remediationLevel`, `enrichmentLevel` |
+| `database/institutes.json` | Add `defenderSettings` |
+| `database/topicProgress.json` | Auto-updated, tracks per-student per-topic |
+| `database/topicTaxonomy.json` | 3-level hierarchy for topic picker |
+| `database/videoLessons.json` | YouTube video library |
+| `database/defenderSessions.json` | Session history (append-only) |
 
 ## Design System Usage
 
@@ -141,3 +200,36 @@ Edit JSON files in `src/database/` - changes reflect on next build/dev restart.
 <button className="bg-white text-black rounded-full px-6 py-2.5">Primary</button>
 <button className="rounded-full border border-white/20 px-6 py-2.5">Secondary</button>
 ```
+
+## Socratic Engine Components
+
+### New Component Library (`src/components/socratic/`)
+| Component | Purpose |
+|-----------|---------|
+| `SocraticEngine.tsx` | Core evaluation logic (shared) |
+| `ChallengeSequence.tsx` | Dynamic question stepper |
+| `DefenderModal.tsx` | Forced checkpoint modal |
+| `TestYourselfPage.tsx` | Voluntary assessment page |
+| `DefenderReport.tsx` | Results: gaps, videos, problems |
+| `MasteryDeltaAnimation.tsx` | Real-time mastery update visual |
+| `VideoRecommendationCard.tsx` | YouTube video suggestion |
+| `ProblemRecommendationCard.tsx` | Adaptive problem suggestion |
+| `SkipConfirmDialog.tsx` | Skip with penalty warning |
+| `ForceExitDialog.tsx` | Exit confirmation |
+| `TimerBar.tsx` | Toughness-based timer |
+
+### New Hooks (`src/hooks/`)
+| Hook | Purpose |
+|------|---------|
+| `useDefenderTrigger.ts` | Check trigger on submission |
+| `useSocraticSession.ts` | Session state management |
+| `useMasteryDelta.ts` | Real-time mastery updates |
+
+### New Services (`src/lib/`)
+| Service | Purpose |
+|---------|---------|
+| `socraticService.ts` | API client (generate, evaluate, complete) |
+| `masteryCalculator.ts` | Mastery delta logic |
+| `topicProgressTracker.ts` | Track solved per topic, trigger logic |
+| `videoLibrary.ts` | YouTube video matching |
+| `problemSelector.ts` | Remediation/enrichment pool filtering |

@@ -11,7 +11,12 @@
     "liveToughnessRating": 1180,
     "solution": "x = 5",
     "solvedCount": 41,
-    "attemptedCount": 58
+    "attemptedCount": 58,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask the student to explain why we divide by 3 after subtracting 5, and what would happen if we divided first."
   },
   {
     "id": "p2",
@@ -25,7 +30,12 @@
     "liveToughnessRating": 1420,
     "solution": "Momentum = 6 kg m/s",
     "solvedCount": 28,
-    "attemptedCount": 44
+    "attemptedCount": 44,
+    "remediationPool": false,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": false,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": null
   },
   {
     "id": "p3",
@@ -39,7 +49,12 @@
     "liveToughnessRating": 1210,
     "solution": "x = 3 and x = 4",
     "solvedCount": 37,
-    "attemptedCount": 51
+    "attemptedCount": 51,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why the quadratic formula works for all quadratics, and what the discriminant tells us about the nature of roots."
   },
   {
     "id": "p4",
@@ -53,7 +68,12 @@
     "liveToughnessRating": 1480,
     "solution": "Waves reinforce or cancel depending on phase.",
     "solvedCount": 24,
-    "attemptedCount": 36
+    "attemptedCount": 36,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask how path difference relates to phase difference, and what happens at boundaries."
   },
   {
     "id": "p5",
@@ -67,7 +87,12 @@
     "liveToughnessRating": 1760,
     "solution": "The major product follows the marked substitution pathway.",
     "solvedCount": 16,
-    "attemptedCount": 29
+    "attemptedCount": 29,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about carbocation stability and how it affects reaction pathway selection."
   },
   {
     "id": "p6",
@@ -81,7 +106,12 @@
     "liveToughnessRating": 1440,
     "solution": "Prophase, metaphase, anaphase, telophase.",
     "solvedCount": 31,
-    "attemptedCount": 45
+    "attemptedCount": 45,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask what happens to chromosomes in each phase, and why the order matters."
   },
   {
     "id": "p7",
@@ -95,7 +125,12 @@
     "liveToughnessRating": 1530,
     "solution": "There are 6 favorable outcomes out of 36 total outcomes.",
     "solvedCount": 22,
-    "attemptedCount": 34
+    "attemptedCount": 34,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why there are 6 favorable outcomes, and how the sample space changes if dice are not fair."
   },
   {
     "id": "p8",
@@ -109,7 +144,12 @@
     "liveToughnessRating": 1820,
     "solution": "The deposited mass is 63.5 g for copper.",
     "solvedCount": 14,
-    "attemptedCount": 23
+    "attemptedCount": 23,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about Faraday's laws and how molar mass affects deposited mass."
   },
   {
     "id": "p9",
@@ -123,7 +163,12 @@
     "liveToughnessRating": 1240,
     "solution": "Chlorophyll absorbs light energy for the photosynthetic pathway.",
     "solvedCount": 35,
-    "attemptedCount": 49
+    "attemptedCount": 49,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why chlorophyll appears green, and what happens to absorbed energy."
   },
   {
     "id": "p10",
@@ -137,7 +182,12 @@
     "liveToughnessRating": 1510,
     "solution": "Parallel circuits split current while series circuits share it.",
     "solvedCount": 26,
-    "attemptedCount": 40
+    "attemptedCount": 40,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask what happens to total resistance in each case, and voltage across components."
   },
   {
     "id": "p11",
@@ -151,7 +201,12 @@
     "liveToughnessRating": 1540,
     "solution": "f'(x) = 3x^2 + 2",
     "solvedCount": 27,
-    "attemptedCount": 43
+    "attemptedCount": 43,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why the power rule works, and what the derivative represents geometrically."
   },
   {
     "id": "p12",
@@ -165,7 +220,12 @@
     "liveToughnessRating": 1690,
     "solution": "The tension balances the component of the load.",
     "solvedCount": 19,
-    "attemptedCount": 31
+    "attemptedCount": 31,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about vector components and why equilibrium requires net force = 0."
   },
   {
     "id": "p13",
@@ -179,7 +239,12 @@
     "liveToughnessRating": 1780,
     "solution": "Use the equivalence relationship between acids and bases.",
     "solvedCount": 15,
-    "attemptedCount": 28
+    "attemptedCount": 28,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about the equivalence point vs endpoint, and how indicator choice affects results."
   },
   {
     "id": "p14",
@@ -193,7 +258,12 @@
     "liveToughnessRating": 1270,
     "solution": "Energy moves from producers to consumers to decomposers.",
     "solvedCount": 33,
-    "attemptedCount": 47
+    "attemptedCount": 47,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why only ~10% energy transfers between trophic levels, and where the rest goes."
   },
   {
     "id": "p15",
@@ -207,7 +277,12 @@
     "liveToughnessRating": 1560,
     "solution": "The resulting matrix is the product of the two inputs.",
     "solvedCount": 23,
-    "attemptedCount": 35
+    "attemptedCount": 35,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why matrix multiplication is not commutative, and what the dimensions must satisfy."
   },
   {
     "id": "p16",
@@ -221,7 +296,12 @@
     "liveToughnessRating": 1490,
     "solution": "The image forms at the focal point and is inverted.",
     "solvedCount": 25,
-    "attemptedCount": 39
+    "attemptedCount": 39,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask what happens when object is at 2F, between F and 2F, and inside F."
   },
   {
     "id": "p17",
@@ -235,7 +315,12 @@
     "liveToughnessRating": 1680,
     "solution": "The limit evaluates after cancelling the factor.",
     "solvedCount": 18,
-    "attemptedCount": 30
+    "attemptedCount": 30,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask why cancelling is valid (limit vs value), and what removable discontinuity means."
   },
   {
     "id": "p18",
@@ -249,7 +334,12 @@
     "liveToughnessRating": 1710,
     "solution": "The voltage decays exponentially over time.",
     "solvedCount": 17,
-    "attemptedCount": 27
+    "attemptedCount": 27,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about time constant τ, and what happens to charge/current at t=τ, 2τ, 5τ."
   },
   {
     "id": "p19",
@@ -263,7 +353,12 @@
     "liveToughnessRating": 1280,
     "solution": "Atomic radius decreases across a period due to increasing nuclear charge.",
     "solvedCount": 34,
-    "attemptedCount": 48
+    "attemptedCount": 48,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why nuclear charge increases but shielding doesn't change much across a period."
   },
   {
     "id": "p20",
@@ -277,7 +372,12 @@
     "liveToughnessRating": 1460,
     "solution": "The ratio follows the expected Mendelian pattern.",
     "solvedCount": 29,
-    "attemptedCount": 42
+    "attemptedCount": 42,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why the ratio is 1:2:1 genotypically but 3:1 phenotypically, and what incomplete dominance changes."
   },
   {
     "id": "p21",
@@ -291,7 +391,12 @@
     "liveToughnessRating": 1320,
     "solution": "The dot product is the sum of pairwise products.",
     "solvedCount": 36,
-    "attemptedCount": 50
+    "attemptedCount": 50,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask what the dot product represents geometrically, and when two vectors are orthogonal."
   },
   {
     "id": "p22",
@@ -305,7 +410,12 @@
     "liveToughnessRating": 1740,
     "solution": "The output follows the defined logic conditions.",
     "solvedCount": 20,
-    "attemptedCount": 33
+    "attemptedCount": 33,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about universal gates (NAND/NOR) and how any circuit can be built from them."
   },
   {
     "id": "p23",
@@ -319,7 +429,12 @@
     "liveToughnessRating": 1470,
     "solution": "Acceleration is given by the slope of the velocity-time graph.",
     "solvedCount": 24,
-    "attemptedCount": 38
+    "attemptedCount": 38,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask how displacement relates to area under v-t graph, and what negative slope means."
   },
   {
     "id": "p24",
@@ -333,7 +448,12 @@
     "liveToughnessRating": 1660,
     "solution": "Use the rate law to estimate the enzyme response.",
     "solvedCount": 18,
-    "attemptedCount": 30
+    "attemptedCount": 30,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about Vmax, Km, and how competitive vs non-competitive inhibitors affect the curve."
   },
   {
     "id": "p25",
@@ -347,7 +467,12 @@
     "liveToughnessRating": 1720,
     "solution": "The branch probabilities multiply along each path.",
     "solvedCount": 16,
-    "attemptedCount": 27
+    "attemptedCount": 27,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask why we multiply along branches, and how conditional probability relates to the tree."
   },
   {
     "id": "p26",
@@ -361,7 +486,12 @@
     "liveToughnessRating": 1300,
     "solution": "Identify the protons, neutrons, and electrons.",
     "solvedCount": 33,
-    "attemptedCount": 46
+    "attemptedCount": 46,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about isotopes, ions, and how electron configuration relates to periodic table position."
   },
   {
     "id": "p27",
@@ -375,7 +505,12 @@
     "liveToughnessRating": 1450,
     "solution": "The average speed is the total distance over total time.",
     "solvedCount": 21,
-    "attemptedCount": 35
+    "attemptedCount": 35,
+    "remediationPool": false,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": false,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": null
   },
   {
     "id": "p28",
@@ -389,7 +524,12 @@
     "liveToughnessRating": 1260,
     "solution": "Use the data to justify the conclusion.",
     "solvedCount": 38,
-    "attemptedCount": 53
+    "attemptedCount": 53,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about experimental design, control variables, and statistical significance."
   },
   {
     "id": "p29",
@@ -403,7 +543,12 @@
     "liveToughnessRating": 1750,
     "solution": "The plan should emphasize evidence and clarity.",
     "solvedCount": 13,
-    "attemptedCount": 24
+    "attemptedCount": 24,
+    "remediationPool": false,
+    "remediationLevel": "advanced",
+    "enrichmentPool": false,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": null
   },
   {
     "id": "p30",
@@ -417,7 +562,12 @@
     "liveToughnessRating": 1500,
     "solution": "Use long division to simplify the polynomial.",
     "solvedCount": 25,
-    "attemptedCount": 39
+    "attemptedCount": 39,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about the Remainder Theorem and Factor Theorem connection."
   },
   {
     "id": "p31",
@@ -431,7 +581,12 @@
     "liveToughnessRating": 1290,
     "solution": "The organelles are visible under the microscope and perform specific tasks.",
     "solvedCount": 31,
-    "attemptedCount": 44
+    "attemptedCount": 44,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about membrane-bound vs non-membrane-bound organelles, and endosymbiotic theory."
   },
   {
     "id": "p32",
@@ -445,7 +600,12 @@
     "liveToughnessRating": 1460,
     "solution": "Ionic bonds transfer electrons; covalent bonds share electrons.",
     "solvedCount": 27,
-    "attemptedCount": 40
+    "attemptedCount": 40,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about electronegativity difference, polar covalent, and metallic bonding."
   },
   {
     "id": "p33",
@@ -459,7 +619,12 @@
     "liveToughnessRating": 1230,
     "solution": "Use the Pythagorean identity to simplify.",
     "solvedCount": 39,
-    "attemptedCount": 54
+    "attemptedCount": 54,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask why sin²x + cos²x = 1, and how to derive other identities from it."
   },
   {
     "id": "p34",
@@ -473,7 +638,12 @@
     "liveToughnessRating": 1520,
     "solution": "Rearrange PV = nRT to solve for pressure.",
     "solvedCount": 23,
-    "attemptedCount": 37
+    "attemptedCount": 37,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about assumptions of ideal gas, and when real gases deviate."
   },
   {
     "id": "p35",
@@ -487,7 +657,12 @@
     "liveToughnessRating": 1450,
     "solution": "DNA unwinds, primers attach, and new strands are synthesized.",
     "solvedCount": 30,
-    "attemptedCount": 43
+    "attemptedCount": 43,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about leading vs lagging strand, Okazaki fragments, and proofreading."
   },
   {
     "id": "p36",
@@ -501,7 +676,12 @@
     "liveToughnessRating": 1650,
     "solution": "Use the exponential growth formula with the given rate.",
     "solvedCount": 21,
-    "attemptedCount": 33
+    "attemptedCount": 33,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about continuous vs discrete compounding, and what the growth constant represents."
   },
   {
     "id": "p37",
@@ -515,7 +695,12 @@
     "liveToughnessRating": 1490,
     "solution": "The geometry follows the electron-pair arrangement around the central atom.",
     "solvedCount": 24,
-    "attemptedCount": 38
+    "attemptedCount": 38,
+    "remediationPool": true,
+    "remediationLevel": "intermediate",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about VSEPR theory, lone pair repulsion, and bond angle deviations."
   },
   {
     "id": "p38",
@@ -529,7 +714,12 @@
     "liveToughnessRating": 1700,
     "solution": "Compute the arithmetic mean and variance from the sample values.",
     "solvedCount": 19,
-    "attemptedCount": 32
+    "attemptedCount": 32,
+    "remediationPool": true,
+    "remediationLevel": "advanced",
+    "enrichmentPool": true,
+    "enrichmentLevel": "expert",
+    "socraticPrompt": "Ask about sample vs population variance (Bessel's correction), and standard deviation interpretation."
   },
   {
     "id": "p39",
@@ -543,7 +733,12 @@
     "liveToughnessRating": 1320,
     "solution": "The trophic levels transfer energy from producers to higher consumers.",
     "solvedCount": 35,
-    "attemptedCount": 49
+    "attemptedCount": 49,
+    "remediationPool": true,
+    "remediationLevel": "basic",
+    "enrichmentPool": true,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": "Ask about keystone species, trophic cascades, and biomass pyramids."
   },
   {
     "id": "p40",
@@ -557,6 +752,11 @@
     "liveToughnessRating": 1240,
     "solution": "The plan should highlight milestones, evidence, and roles.",
     "solvedCount": 18,
-    "attemptedCount": 28
+    "attemptedCount": 28,
+    "remediationPool": false,
+    "remediationLevel": "basic",
+    "enrichmentPool": false,
+    "enrichmentLevel": "advanced",
+    "socraticPrompt": null
   }
 ]

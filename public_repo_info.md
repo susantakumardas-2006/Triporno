@@ -6,6 +6,7 @@ SmartEd is a role-based practice and classroom platform for students, faculty, a
 - Students: practice, mastery tracking, contests, projects, homework, profile analytics.
 - Faculty: class management, requests, roster oversight, problem publishing, homework grading.
 - Institutes: dashboards, faculty approvals, student performance insights, and subscription-based listing.
+- **Socratic Engine**: AI-powered enrichment challenges (Defender) and voluntary self-assessment (Test Yourself) with adaptive questioning, gap analysis, video recommendations, and mastery updates.
 
 ## Tech stack
 - Vite + React 18 + TypeScript + Tailwind CSS 3 + lucide-react
@@ -19,3 +20,5 @@ SmartEd is a role-based practice and classroom platform for students, faculty, a
 - src/: React pages, routes, and UI shell
 - database/: mock JSON data for users, institutes, problems, submissions, and subscriptions
 - ml-engine/: swappable scoring logic for mastery and toughness
+- api/: Vercel serverless functions (StudyBuddy + Socratic Engine)
+- docs/: Architecture, development, deployment, and API documentation

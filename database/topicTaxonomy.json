@@ -1,0 +1,26 @@
+{
+  "Math": {
+    "Algebra": ["Linear Equations", "Quadratic Equations", "Polynomials", "Inequalities", "Functions", "Synthetic Division"],
+    "Calculus": ["Limits", "Derivatives", "Integrals", "Differential Equations", "Series", "Exponential Growth"],
+    "Geometry": ["Coordinate Geometry", "Trigonometry", "Vectors", "3D Geometry", "Matrix Operations", "Vector Dot Product"],
+    "Statistics": ["Probability", "Distributions", "Hypothesis Testing", "Regression", "Probability Trees", "Survey Statistics"]
+  },
+  "Physics": {
+    "Mechanics": ["Kinematics", "Newton's Laws", "Work Energy Power", "Momentum", "Rotational Motion", "Forces in Equilibrium", "Kinematics Graphs"],
+    "Thermodynamics": ["Laws", "Heat Engines", "Entropy", "Statistical Mechanics"],
+    "Electromagnetism": ["Electrostatics", "Current Electricity", "Magnetism", "EM Waves", "Circuit Comparison", "Capacitor Discharge", "Semiconductor Logic"],
+    "Optics": ["Reflection", "Refraction", "Lenses", "Mirrors", "Wave Interference", "Lenses and Mirrors"],
+    "Modern Physics": ["Quantum", "Relativity", "Nuclear", "Particle"]
+  },
+  "Chemistry": {
+    "Physical": ["Atomic Structure", "Chemical Bonding", "Thermodynamics", "Equilibrium", "Kinetics", "Ideal Gas Law", "Electrolysis", "Acid-Base Titration"],
+    "Organic": ["Hydrocarbons", "Functional Groups", "Reaction Mechanisms", "Stereochemistry", "Biomolecules", "Organic Reaction Pathways", "Molecular Geometry"],
+    "Inorganic": ["Periodic Properties", "Coordination Compounds", "Metallurgy", "Qualitative Analysis", "Periodic Trends", "Chemical Bonding Review"]
+  },
+  "Biology": {
+    "Cell Biology": ["Cell Structure", "Cell Division", "Transport", "Signaling", "Enzyme Kinetics", "Biology Microscopy Lab"],
+    "Genetics": ["Mendelian", "Molecular", "Population", "Biotechnology", "Genetic Inheritance", "DNA Replication"],
+    "Ecology": ["Ecosystems", "Biodiversity", "Conservation", "Climate Change", "Photosynthesis Flow", "Ecology Food Webs", "Plant Physiology"],
+    "Physiology": ["Systems", "Homeostasis", "Neural", "Endocrine"]
+  }
+}

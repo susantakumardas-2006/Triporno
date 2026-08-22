@@ -8,7 +8,18 @@
     "listed": true,
     "successStory": "Engagement rose from 20% to over 95% in one semester.",
     "email": "institute@smarted.demo",
-    "password": "demo1234"
+    "password": "demo1234",
+    "defenderSettings": {
+      "masteryThreshold": 75,
+      "confidenceThreshold": 0.75,
+      "maxQuestions": 6,
+      "minQuestions": 3,
+      "skipPenalty": -3,
+      "forceExitPenalty": -8,
+      "timerEnabled": true,
+      "timerBase": 180,
+      "enrichmentMode": true
+    }
   },
   {
     "id": "riverside",
@@ -17,7 +28,18 @@
     "board": "ICSE/ISC",
     "subscribed": true,
     "listed": true,
-    "successStory": "Teachers saved hours each week with SmartEd workflows."
+    "successStory": "Teachers saved hours each week with SmartEd workflows.",
+    "defenderSettings": {
+      "masteryThreshold": 75,
+      "confidenceThreshold": 0.75,
+      "maxQuestions": 6,
+      "minQuestions": 3,
+      "skipPenalty": -3,
+      "forceExitPenalty": -8,
+      "timerEnabled": true,
+      "timerBase": 180,
+      "enrichmentMode": true
+    }
   },
   {
     "id": "xavier",
@@ -26,7 +48,18 @@
     "board": "WBCHSE",
     "subscribed": false,
     "listed": false,
-    "successStory": "Pending subscription and public listing."
+    "successStory": "Pending subscription and public listing.",
+    "defenderSettings": {
+      "masteryThreshold": 75,
+      "confidenceThreshold": 0.75,
+      "maxQuestions": 6,
+      "minQuestions": 3,
+      "skipPenalty": -3,
+      "forceExitPenalty": -8,
+      "timerEnabled": true,
+      "timerBase": 180,
+      "enrichmentMode": true
+    }
   },
   {
     "id": "greenfield",
@@ -35,7 +68,18 @@
     "board": "IB",
     "subscribed": true,
     "listed": true,
-    "successStory": "Faster feedback loops and deeper project engagement."
+    "successStory": "Faster feedback loops and deeper project engagement.",
+    "defenderSettings": {
+      "masteryThreshold": 75,
+      "confidenceThreshold": 0.75,
+      "maxQuestions": 6,
+      "minQuestions": 3,
+      "skipPenalty": -3,
+      "forceExitPenalty": -8,
+      "timerEnabled": true,
+      "timerBase": 180,
+      "enrichmentMode": true
+    }
   },
   {
     "id": "sunrise",
@@ -44,6 +88,17 @@
     "board": "IGCSE",
     "subscribed": false,
     "listed": false,
-    "successStory": "Newly onboarded and preparing for public access."
+    "successStory": "Newly onboarded and preparing for public access.",
+    "defenderSettings": {
+      "masteryThreshold": 75,
+      "confidenceThreshold": 0.75,
+      "maxQuestions": 6,
+      "minQuestions": 3,
+      "skipPenalty": -3,
+      "forceExitPenalty": -8,
+      "timerEnabled": true,
+      "timerBase": 180,
+      "enrichmentMode": true
+    }
   }
 ]

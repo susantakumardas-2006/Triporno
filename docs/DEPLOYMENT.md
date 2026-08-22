@@ -24,7 +24,7 @@ Go to **Settings** → **Environment Variables** and add:
 
 **Important**: Both keys are required.
 - `VITE_STUDY_BUDDY_KEY` → embedded in frontend bundle (Vite exposes `VITE_*` vars)
-- `STUDY_BUDDY_KEY` → used by serverless function at `/api/studybuddy`
+- `STUDY_BUDDY_KEY` → used by serverless functions at `/api/studybuddy` and `/api/socratic/*`
 
 ### 3. Deploy
 
@@ -32,7 +32,7 @@ Click **Deploy**. Vercel will:
 1. Run `npm install`
 2. Run `npm run build` (TypeScript + Vite)
 3. Deploy `dist/` as static assets
-4. Deploy `api/index.js` as serverless function at `/api/studybuddy` and `/api/health`
+4. Deploy `api/index.js` as serverless function at `/api/studybuddy`, `/api/health`, `/api/socratic/*`, `/api/video-lessons`
 
 ### 4. Verify
 
@@ -42,6 +42,7 @@ After deployment:
 3. Open StudyBuddy chat (bottom-left)
 4. Send a message → should get AI response
 5. Check `/api/health` → should return `{ "ok": true, "keyPresent": true, "keyType": "apiKey" }`
+6. Test Socratic: Complete 5+ problems in a topic with mastery > 75 → Defender should trigger
 
 ## Vercel Configuration
 
@@ -65,8 +66,8 @@ The rewrite handles SPA routing (React Router).
 
 | Variable | Used By | Description |
 |----------|---------|-------------|
-| `VITE_STUDY_BUDDY_KEY` | Frontend (`chatService.ts`) | Gemini API key for direct calls (falls back to proxy) |
-| `STUDY_BUDDY_KEY` | API (`api/index.js`) | Gemini API key for serverless proxy |
+| `VITE_STUDY_BUDDY_KEY` | Frontend (`chatService.ts`, `socraticService.ts`) | Gemini API key for direct calls (falls back to proxy) |
+| `STUDY_BUDDY_KEY` | API (`api/index.js`) | Gemini API key for serverless proxy (StudyBuddy + Socratic) |
 
 ### Optional
 
@@ -97,6 +98,49 @@ Every push to a branch creates a **Preview Deployment** with its own URL. Env va
 - [ ] `npm run build` passes locally
 - [ ] Chatbot works on production URL
 - [ ] `/api/health` returns `keyPresent: true`
+- [ ] Socratic Defender triggers at mastery > 75
+- [ ] Test Yourself page loads and functions
+- [ ] `/api/video-lessons?topic=Math` returns videos
+- [ ] Session resume works after browser refresh
+
+## Socratic Engine Deployment Notes
+
+### New Serverless Endpoints
+The `api/index.js` now handles multiple endpoints:
+- `/api/studybuddy` - StudyBuddy chat
+- `/api/socratic/check-trigger` - Defender trigger check
+- `/api/socratic/start-session` - Initialize session
+- `/api/socratic/next-question` - Get next question
+- `/api/socratic/evaluate-response` - Evaluate defense
+- `/api/socratic/complete-session` - Complete & generate report
+- `/api/socratic/skip-question` - Skip with penalty
+- `/api/socratic/force-exit` - Force exit with penalty
+- `/api/socratic/resume/:sessionId` - Resume session
+- `/api/video-lessons` - Video library queries
+- `/api/health` - Health check
+
+All share the same `STUDY_BUDDY_KEY`.
+
+### Data Files
+The following JSON files are read at runtime (not build time):
+- `database/topicProgress.json` - Updated per session
+- `database/defenderSessions.json` - Append-only log
+- `database/videoLessons.json` - Read-only (can be large)
+- `database/topicTaxonomy.json` - Read-only
+
+**Note**: For production scale, consider moving these to a database (Vercel KV, PostgreSQL, etc.)
+
+### Function Timeout
+Socratic endpoints may need longer timeout (default 10s, max 60s on Pro). Add to `vercel.json` if needed:
+```json
+{
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  }
+}
+```
 
 ## Troubleshooting
 
@@ -107,6 +151,8 @@ Every push to a branch creates a **Preview Deployment** with its own URL. Env va
 | 401 from Gemini | Key invalid/revoked; rotate in Google AI Studio |
 | CORS errors | Should not happen - proxy is same-origin; check `api/index.js` deployed |
 | SPA routes 404 | Verify `vercel.json` rewrites; check `outputDirectory: dist` |
+| Defender not triggering | Check `topicProgress.json` updates; verify mastery > 75 logic |
+| Video lessons not loading | Check `videoLessons.json` format; verify `/api/video-lessons` endpoint |
 
 ## Manual Redeploy
 

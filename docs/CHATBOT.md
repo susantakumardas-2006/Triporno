@@ -26,30 +26,32 @@ StudyBuddy is an AI-powered learning assistant integrated as a floating chat wid
 
 ## API Integration
 
-### Gemini Interactions API (Current)
+### Gemini generateContent API (Current)
 
-**Endpoint**: `https://generativelanguage.googleapis.com/v1beta/interactions`
-**Model**: `gemini-3.7-flash`
+**Endpoint**: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`
+**Model**: `gemini-1.5-flash`
 **Auth**: `x-goog-api-key` header + `key` query param
-**API Revision**: `2026-05-20`
 
 **Request**:
 ```json
 {
-  "model": "gemini-3.7-flash",
-  "input": "User message + history as text",
-  "systemInstruction": "System prompt from systemprompt.txt"
+  "contents": [
+    {"role": "user", "parts": [{"text": "User message"}]}
+  ],
+  "systemInstruction": {"parts": [{"text": "System prompt from systemprompt.txt"}]},
+  "generationConfig": {
+    "temperature": 0.6,
+    "maxOutputTokens": 2048
+  }
 }
 ```
 
 **Response**:
 ```json
 {
-  "steps": [{
-    "modelOutput": {
-      "content": [{
-        "text": { "text": "AI response here" }
-      }]
+  "candidates": [{
+    "content": {
+      "parts": [{"text": "AI response here"}]
     }
   }]
 }
@@ -69,8 +71,8 @@ Vercel serverless function at `/api/studybuddy`:
 **Flow**:
 1. Receives messages from frontend
 2. Reads `STUDY_BUDDY_KEY` from env (or falls back to deleted `api.txt`)
-3. Calls Gemini Interactions API server-side (no CORS)
-4. Parses response, extracts text from `steps[0].modelOutput.content[0].text.text`
+3. Calls Gemini generateContent API server-side (no CORS)
+4. Parses response, extracts text from `candidates[0].content.parts[0].text`
 5. Returns JSON to frontend
 
 ### Health Endpoint (`/api/health`)
@@ -184,5 +186,25 @@ Frontend receives `{ content: string, structured: object }` and can render rich 
 | `src/Chatbot/ChatWidget.tsx` | Chat UI |
 | `src/Chatbot/chatService.ts` | API client + fallback logic |
 | `src/Chatbot/systemprompt.txt` | System prompt |
-| `api/index.js` | Vercel serverless proxy |
+| `api/index.js` | Vercel serverless proxy (StudyBuddy + Socratic) |
+| `api/socratic.js` | Socratic Engine endpoints |
 | `start-api.cjs` | Local proxy entry point |
+
+## Socratic Engine Integration
+
+The same `api/index.js` proxy now serves both StudyBuddy and Socratic Engine endpoints. The `STUDY_BUDDY_KEY` is shared.
+
+### Shared Proxy Pattern
+```javascript
+// api/index.js routes:
+app.post('/api/studybuddy', studyBuddyHandler);
+app.post('/api/socratic/*', socraticHandler);
+app.get('/api/video-lessons', videoLibraryHandler);
+app.get('/api/health', healthHandler);
+```
+
+### Socratic-Specific Env Vars
+| Variable | Location | Purpose |
+|----------|----------|---------|
+| `STUDY_BUDDY_KEY` | API (Vercel) | Shared key for both StudyBuddy + Socratic |
+| `VITE_STUDY_BUDDY_KEY` | Frontend (Vite) | Direct calls fallback for both |
