@@ -8,22 +8,29 @@ app.use(cors());
 app.use(express.json());
 
 async function callGemini(messages, apiKey) {
-  const inputText = messages.map((m) => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n');
   const systemInstruction = messages.find(m => m.role === 'system')?.content;
+  const contents = messages
+    .filter(m => m.role !== 'system')
+    .map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
 
   const headers = { 
     'Content-Type': 'application/json',
-    'x-goog-api-key': apiKey,
-    'Api-Revision': '2026-05-20'
+    'x-goog-api-key': apiKey
   };
 
   const body = {
-    model: 'gemini-3.7-flash',
-    input: inputText,
-    systemInstruction: systemInstruction
+    contents,
+    systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined,
+    generationConfig: {
+      temperature: 0.6,
+      maxOutputTokens: 2048,
+    }
   };
 
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent', {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
@@ -37,21 +44,15 @@ async function callGemini(messages, apiKey) {
 
   const data = await res.json();
   let content = '';
-  if (data.steps && data.steps[0] && data.steps[0].modelOutput && data.steps[0].modelOutput.content && data.steps[0].modelOutput.content[0] && data.steps[0].modelOutput.content[0].text && data.steps[0].modelOutput.content[0].text.text) {
-    content = data.steps[0].modelOutput.content[0].text.text;
+  if (data.candidates && data.candidates[0]) {
+    const cand = data.candidates[0];
+    if (cand.content && cand.content.parts && Array.isArray(cand.content.parts) && cand.content.parts[0] && cand.content.parts[0].text) {
+      content = cand.content.parts.map(p => p.text || '').join('\n');
+    } else if (cand.output_text) {
+      content = cand.output_text;
+    }
   } else if (data.output_text) {
     content = data.output_text;
-  } else if (data.candidates && data.candidates[0]) {
-    const cand = data.candidates[0];
-    if (cand.output_text) content = cand.output_text;
-    else if (typeof cand.content === 'string') content = cand.content;
-    else if (cand.content && cand.content.parts && Array.isArray(cand.content.parts) && cand.content.parts[0] && cand.content.parts[0].text) {
-      content = cand.content.parts.map((p) => p.text || '').join('\n');
-    } else if (cand.output && Array.isArray(cand.output) && cand.output[0] && cand.output[0].content) {
-      const first = cand.output[0].content;
-      if (typeof first === 'string') content = first;
-      else if (Array.isArray(first) && first[0] && first[0].text) content = first[0].text;
-    }
   }
 
   return content || JSON.stringify(data);
@@ -149,5 +150,4 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, keyPresent, keyType });
 });
 
-// Export the Express app for Vercel Serverless Function usage
 module.exports = app;

@@ -22,19 +22,11 @@ async function callGemini(messages: ChatMessage[], apiKey: string) {
   };
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/interactions?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey,
-        'Api-Revision': '2026-05-20'
-      },
-      body: JSON.stringify({
-        model: 'gemini-3.7-flash',
-        input: messages.filter(m => m.role !== 'system').map(m => m.content).join('\n'),
-        systemInstruction: messages.find(m => m.role === 'system')?.content
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     }
   );
 
@@ -44,7 +36,7 @@ async function callGemini(messages: ChatMessage[], apiKey: string) {
   }
 
   const data = await res.json();
-  const content = data.steps?.[0]?.modelOutput?.content?.[0]?.text?.text ?? '';
+  const content = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
   return content;
 }
 
