@@ -327,7 +327,7 @@ router.post('/start-session', async (req, res) => {
       triggerType: triggerType || 'auto',
       mode: 'enrichment',
       status: 'active',
-      questions: [],
+      questions: [firstQuestion],
       startedAt: new Date().toISOString(),
       lastActiveAt: new Date().toISOString(),
       skippedQuestionIds: [],

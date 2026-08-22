@@ -1,1 +1,160 @@
-{}
+{
+  "sess-1787383690594-gmqaqflv8": {
+    "id": "sess-1787383690594-gmqaqflv8",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "active",
+    "questions": [],
+    "startedAt": "2026-08-22T07:28:10.594Z",
+    "lastActiveAt": "2026-08-22T07:28:10.594Z",
+    "skippedQuestionIds": [],
+    "forceExited": false
+  },
+  "sess-1787383731870-2jud6o0l4": {
+    "id": "sess-1787383731870-2jud6o0l4",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "active",
+    "questions": [],
+    "startedAt": "2026-08-22T07:28:51.871Z",
+    "lastActiveAt": "2026-08-22T07:28:51.871Z",
+    "skippedQuestionIds": [],
+    "forceExited": false
+  },
+  "sess-1787384197724-v3rv8ittk": {
+    "id": "sess-1787384197724-v3rv8ittk",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "active",
+    "questions": [
+      {
+        "id": "q-sess-1787384197725-sputytvdb",
+        "level": "easy",
+        "question": "What does the discriminant tell you about the nature of roots in a quadratic equation?",
+        "expectedConcepts": [
+          "discriminant",
+          "roots",
+          "quadratic formula"
+        ],
+        "conceptTags": [
+          "Algebra",
+          "Math"
+        ],
+        "toughnessRating": 1200
+      }
+    ],
+    "startedAt": "2026-08-22T07:36:37.725Z",
+    "lastActiveAt": "2026-08-22T07:36:37.725Z",
+    "skippedQuestionIds": [],
+    "forceExited": false
+  },
+  "sess-1787384506656-hum7xt3dg": {
+    "id": "sess-1787384506656-hum7xt3dg",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "active",
+    "questions": [
+      {
+        "id": "q-sess-1787384506656-owvm4ma1r",
+        "level": "easy",
+        "question": "What does the discriminant tell you about the nature of roots in a quadratic equation?",
+        "expectedConcepts": [
+          "discriminant",
+          "roots",
+          "quadratic formula"
+        ],
+        "conceptTags": [
+          "Algebra",
+          "Math"
+        ],
+        "toughnessRating": 1200,
+        "evaluation": "understood",
+        "confidence": 0.9900000000000001,
+        "timeSpent": 161,
+        "studentResponse": "5"
+      }
+    ],
+    "startedAt": "2026-08-22T07:41:46.656Z",
+    "lastActiveAt": "2026-08-22T07:41:53.206Z",
+    "skippedQuestionIds": [],
+    "forceExited": false
+  },
+  "sess-1787384537905-wxmwcgmbl": {
+    "id": "sess-1787384537905-wxmwcgmbl",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "force-exited",
+    "questions": [
+      {
+        "id": "q-sess-1787384537905-79bhr3eig",
+        "level": "easy",
+        "question": "What does the discriminant tell you about the nature of roots in a quadratic equation?",
+        "expectedConcepts": [
+          "discriminant",
+          "roots",
+          "quadratic formula"
+        ],
+        "conceptTags": [
+          "Algebra",
+          "Math"
+        ],
+        "toughnessRating": 1200,
+        "evaluation": "understood",
+        "confidence": 0.9900000000000001,
+        "timeSpent": 129,
+        "studentResponse": "hguygyu"
+      }
+    ],
+    "startedAt": "2026-08-22T07:42:17.905Z",
+    "lastActiveAt": "2026-08-22T07:42:49.327Z",
+    "skippedQuestionIds": [],
+    "forceExited": true,
+    "completedAt": "2026-08-22T07:43:02.512Z",
+    "duration": 44
+  },
+  "sess-1787385176913-aqtqf7lao": {
+    "id": "sess-1787385176913-aqtqf7lao",
+    "studentId": "student-1",
+    "topic": "Algebra",
+    "domain": "Math",
+    "triggerType": "auto",
+    "mode": "enrichment",
+    "status": "active",
+    "questions": [
+      {
+        "id": "q-sess-1787385176914-8one3jvtw",
+        "level": "easy",
+        "question": "What does the discriminant tell you about the nature of roots in a quadratic equation?",
+        "expectedConcepts": [
+          "discriminant",
+          "roots",
+          "quadratic formula"
+        ],
+        "conceptTags": [
+          "Algebra",
+          "Math"
+        ],
+        "toughnessRating": 1200
+      }
+    ],
+    "startedAt": "2026-08-22T07:52:56.914Z",
+    "lastActiveAt": "2026-08-22T07:52:56.914Z",
+    "skippedQuestionIds": [],
+    "forceExited": false
+  }
+}

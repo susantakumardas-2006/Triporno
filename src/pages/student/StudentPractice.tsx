@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import AppShell from '../../components/AppShell';
 import { Lock, LayoutGrid, Flame, BookOpen, ClipboardList, MessageCircle, Trophy } from 'lucide-react';
 import problems from '../../../database/problems.json';
+import DefenderModal from '../../components/socratic/DefenderModal';
 
 type Problem = {
   id: string;
@@ -30,10 +31,19 @@ function StudentPractice() {
     return window.localStorage.getItem('smarted-premium') === 'true';
   });
   const [difficultyFilter, setDifficultyFilter] = useState('All');
+  const [answer, setAnswer] = useState('');
+  const [defenderActive, setDefenderActive] = useState(false);
+  const [defenderSession, setDefenderSession] = useState<{
+    sessionId: string;
+    firstQuestion: any;
+    estimatedTime: number;
+  } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navItems = [
     { to: '/app/student/dashboard', label: 'Dashboard', icon: LayoutGrid },
     { to: '/app/student/practice', label: 'Practice', icon: Flame },
+    { to: '/app/student/test-yourself', label: 'Test Yourself', icon: ClipboardList },
     { to: '/app/student/homework', label: 'Homework', icon: BookOpen },
     { to: '/app/student/projects', label: 'Projects', icon: ClipboardList },
     { to: '/app/student/discuss', label: 'Discuss', icon: MessageCircle },
@@ -53,6 +63,63 @@ function StudentPractice() {
 
   const hasSolutionAccess = premium && problem?.authorType !== 'institute';
   const solutionLabel = problem?.authorType === 'institute' ? 'Solution released by your teacher' : 'Unlock with Premium';
+
+  const getDomainFromConceptTags = (tags: string[]) => {
+    const domainMap: Record<string, string> = {
+      'Algebra': 'Math', 'Calculus': 'Math', 'Geometry': 'Math', 'Statistics': 'Math',
+      'Mechanics': 'Physics', 'Optics': 'Physics', 'Electricity': 'Physics', 'Thermodynamics': 'Physics',
+      'Physical': 'Chemistry', 'Organic': 'Chemistry', 'Inorganic': 'Chemistry',
+      'Cell': 'Biology', 'Genetics': 'Biology', 'Ecology': 'Biology', 'Physiology': 'Biology',
+    };
+    for (const tag of tags) {
+      if (domainMap[tag]) return domainMap[tag];
+    }
+    return tags[0] || 'Math';
+  };
+
+  const handleSubmit = async () => {
+    if (!answer.trim() || isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const topic = problem?.conceptTags[1] || problem?.conceptTags[0] || 'Algebra';
+      const domain = getDomainFromConceptTags(problem?.conceptTags || []);
+
+      const res = await fetch('/api/socratic/check-trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: 'student-1', topic })
+      });
+      const data = await res.json();
+
+      if (data.shouldTrigger) {
+        const sessionRes = await fetch('/api/socratic/start-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ studentId: 'student-1', topic, triggerType: 'auto' })
+        });
+        const sessionData = await sessionRes.json();
+        setDefenderSession(sessionData);
+        setDefenderActive(true);
+      } else {
+        // Normal submit - record submission locally
+        console.log('Answer submitted for:', problem?.title, answer);
+        // Could add to localStorage or call a submissions API
+        alert('Answer submitted! (Defender not triggered - mastery below threshold)');
+      }
+    } catch (e) {
+      console.error('Submit error:', e);
+      alert('Failed to submit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDefenderComplete = () => {
+    setDefenderActive(false);
+    setDefenderSession(null);
+    setAnswer('');
+  };
 
   if (!problemId) {
     return (
@@ -170,10 +237,23 @@ function StudentPractice() {
                 <h2 className="text-xl font-semibold">Response workspace</h2>
                 <span className="text-sm text-white/60">Auto-save enabled</span>
               </div>
-              <textarea className="w-full h-64 rounded-2xl bg-white/10 p-4 outline-none text-white placeholder:text-white/40" placeholder="Write your answer or reasoning here" />
+              <textarea
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="w-full h-64 rounded-2xl bg-white/10 p-4 outline-none text-white placeholder:text-white/40"
+                placeholder="Write your answer or reasoning here"
+              />
               <div className="mt-4 flex flex-wrap gap-3">
-                <button className="bg-white text-black rounded-full px-6 py-2.5">Submit</button>
-                <button className="rounded-full border border-white/20 px-6 py-2.5">Ask for hint</button>
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting || !answer.trim()}
+                  className="bg-white text-black rounded-full px-6 py-2.5 disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
+                </button>
+                <button className="rounded-full border border-white/20 px-6 py-2.5">
+                  Ask for hint
+                </button>
               </div>
               <div className="mt-6">
                 {hasSolutionAccess ? (
@@ -188,6 +268,14 @@ function StudentPractice() {
           </div>
         </div>
       </div>
+
+      {defenderActive && defenderSession && (
+        <DefenderModal
+          session={defenderSession}
+          onComplete={handleDefenderComplete}
+          onClose={handleDefenderComplete}
+        />
+      )}
     </AppShell>
   );
 }
